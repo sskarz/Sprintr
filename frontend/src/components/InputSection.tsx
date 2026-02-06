@@ -124,7 +124,7 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-text-primary tracking-tight">
-          Interview Sprint Planner
+          Sprintr
         </h1>
         <p className="text-text-secondary mt-2 text-base">
           Analyze user interviews and turn insights into actionable GitHub issues
