@@ -1,6 +1,9 @@
+import logging
 import httpx
 from config import COMPOSIO_API_KEY, GITHUB_PAT, GITHUB_OWNER, GITHUB_REPO
 from templates import build_issue_body, build_issue_title
+
+logger = logging.getLogger(__name__)
 
 # Try Composio, fall back to raw API
 USE_COMPOSIO = bool(COMPOSIO_API_KEY)
@@ -12,6 +15,23 @@ if USE_COMPOSIO:
     except Exception:
         USE_COMPOSIO = False
         composio_client = None
+
+
+def _find_in_nested(obj, key):
+    """Recursively search a nested dict/list for a key."""
+    if isinstance(obj, dict):
+        if key in obj:
+            return obj[key]
+        for v in obj.values():
+            found = _find_in_nested(v, key)
+            if found is not None:
+                return found
+    elif isinstance(obj, list):
+        for item in obj:
+            found = _find_in_nested(item, key)
+            if found is not None:
+                return found
+    return None
 
 
 async def _create_via_composio(title: str, body: str, labels: list[str]) -> dict:
@@ -27,14 +47,24 @@ async def _create_via_composio(title: str, body: str, labels: list[str]) -> dict
         user_id="default",
         dangerously_skip_version_check=True,
     )
-    # Composio wraps response — try common paths for the data
-    data = result.get("data", result)
-    if isinstance(data, dict):
-        return {
-            "html_url": data.get("html_url", f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/issues"),
-            "number": data.get("number", 0),
-        }
-    return {"html_url": f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/issues", "number": 0}
+    logger.info("Composio GITHUB_CREATE_AN_ISSUE response: %s", result)
+
+    # Check if Composio reports failure
+    if isinstance(result, dict) and result.get("successful") is False:
+        error_msg = result.get("error", "Unknown Composio error")
+        raise RuntimeError(f"Composio issue creation failed: {error_msg}")
+
+    # Search the full response tree for html_url and number
+    html_url = _find_in_nested(result, "html_url")
+    number = _find_in_nested(result, "number")
+
+    if not html_url or not number:
+        raise RuntimeError(
+            f"Composio response missing html_url or number. "
+            f"Got html_url={html_url}, number={number}. Raw: {result}"
+        )
+
+    return {"html_url": html_url, "number": number}
 
 
 async def _create_via_github_api(title: str, body: str, labels: list[str]) -> dict:
