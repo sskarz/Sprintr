@@ -4,30 +4,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Interview Sprint Planner** — a FastAPI backend that converts user interview transcripts into actionable GitHub issues via a multi-LLM pipeline. No database, no auth, in-memory only. Hackathon project.
+**Interview Sprint Planner** — converts user interview transcripts into actionable GitHub issues via a multi-LLM pipeline. FastAPI backend + React/Vite frontend. No database, no auth, in-memory only. Hackathon project.
 
 ## Commands
 
 ```bash
-# Setup
+# Backend setup
 cd backend && pip install -r requirements.txt
 cp .env.example .env  # then fill in API keys
 
 # Composio setup (one-time, interactive)
 composio login && composio add github
 
-# Run server
+# Run backend
 cd backend && uvicorn main:app --reload --port 8000
 # OR: cd backend && python main.py
+
+# Frontend setup & dev
+cd frontend && npm install
+cd frontend && npm run dev        # starts on http://localhost:5173
+cd frontend && npm run build      # production build (runs tsc then vite build)
+cd frontend && npm run lint       # eslint
 
 # Health check
 curl http://localhost:8000/health
 
-# API docs
+# API docs (Swagger UI)
 open http://localhost:8000/docs
 ```
 
-No test suite, linter, or CI configured yet.
+No test suite or CI configured yet.
 
 ## Required Environment Variables
 
@@ -42,7 +48,7 @@ All in `backend/.env` (see `.env.example`):
 
 ## Architecture
 
-The pipeline flows through 4 stages, each with a dedicated endpoint and service:
+### Pipeline (4 stages)
 
 ```
 Audio/Text → Transcription → Analysis → Enrichment → GitHub Issues
@@ -50,26 +56,38 @@ Audio/Text → Transcription → Analysis → Enrichment → GitHub Issues
 
 1. **Transcription** (`/transcribe/audio`, `/transcribe/text`) — OpenAI `gpt-4o-transcribe-diarize` for audio with speaker diarization; simple text parser for pasted transcripts.
 2. **Analysis** (`/analyze`) — Claude `claude-sonnet-4-5-20250929` with structured outputs extracts categorized insights (pain points, feature requests, etc.) with severity and evidence quotes.
-3. **Enrichment** (`/enrich`) — Parallel You.com web searches per insight, then parallel Gemini `gemini-3-flash-preview` summarization to produce implementation guides.
+3. **Enrichment** (`/enrich`) — Parallel `asyncio.gather()` for You.com web searches per insight, then parallel Gemini `gemini-3-flash-preview` summarization to produce implementation guides.
 4. **Issue Creation** (`/create-issues`) — Creates GitHub issues via Composio (primary) with raw GitHub API fallback. Sequential to avoid rate limits.
 
 `POST /pipeline` runs all 4 stages end-to-end in a single call.
 
-### Code Layout
+### Frontend ↔ Backend Integration
 
-All backend code is in `backend/`. The `frontend/` directory is a placeholder.
+The frontend calls `/api/*` which Vite's dev proxy (`vite.config.ts`) rewrites to `http://localhost:8000/*`. Both servers must be running during development. The frontend drives a 3-step wizard: input → insights review/edit → output (created issues).
 
-- `main.py` — FastAPI app, all route definitions, CORS middleware
-- `config.py` — loads env vars via `python-dotenv`
+API client lives in `frontend/src/api.ts` — all calls use `fetch` with the `/api` prefix.
+
+### Backend Code Layout (`backend/`)
+
+- `main.py` — FastAPI app, all route definitions, CORS middleware (allows all origins)
+- `config.py` — loads env vars via `python-dotenv` at import time; fails loudly if required keys missing
 - `models.py` — all Pydantic request/response models and enums
 - `prompts.py` — Claude system prompt and JSON schema for structured outputs
-- `templates.py` — GitHub issue title/body formatting
+- `templates.py` — GitHub issue title/body formatting (severity emojis, markdown sections)
 - `services/` — one module per pipeline stage:
   - `transcription.py` — OpenAI transcribe + text parser
   - `analysis.py` — Claude structured output analysis
-  - `enrichment.py` — You.com search + orchestrates Gemini summarization
+  - `enrichment.py` — You.com search + orchestrates Gemini summarization (parallel via `asyncio.gather`)
   - `gemini_summarizer.py` — Gemini implementation guide generation
-  - `github_issues.py` — Composio + GitHub API issue creation
+  - `github_issues.py` — Composio + GitHub API issue creation (two-tier fallback)
+
+### Frontend Code Layout (`frontend/src/`)
+
+- `App.tsx` — root component, manages single `AppState` via `useState`, orchestrates pipeline calls
+- `api.ts` — API client functions (all endpoints)
+- `types.ts` — TypeScript types mirroring backend Pydantic models
+- `utils.ts` — styling constants
+- `components/` — `Sidebar.tsx` (nav/progress), `InputSection.tsx` (audio/text input), `InsightsSection.tsx` (insight review with inline editing, filtering), `OutputSection.tsx` (created issues display)
 
 ## Critical API Constraints
 
@@ -86,18 +104,18 @@ All backend code is in `backend/`. The `frontend/` directory is a placeholder.
 - Max file size: 25 MB
 
 **GitHub Issues** (`services/github_issues.py`):
-- Labels used in issues (`pain_point`, `feature_request`, `workflow_issue`, etc. + severity levels) must already exist on the target repo
+- Labels (`pain_point`, `feature_request`, `workflow_issue`, `positive_feedback`, `confusion` + `critical`, `high`, `medium`, `low`) must already exist on the target repo
 - Issues created sequentially to preserve order and avoid rate limits
 
 ## Tech Stack
 
 | Component | Technology |
 |-----------|-----------|
-| Framework | FastAPI 0.115.6 + Uvicorn |
-| Language | Python 3.14, Pydantic 2.11 |
+| Backend | FastAPI 0.115.6 + Uvicorn, Python 3.14, Pydantic 2.11 |
+| Frontend | React 19, TypeScript, Vite 7, Tailwind CSS 4 |
 | Transcription | OpenAI gpt-4o-transcribe-diarize |
 | Analysis | Claude Sonnet 4.5 (structured outputs) |
 | Doc Search | You.com Web Search API |
 | Summarization | Google Gemini 3 Flash |
 | GitHub | Composio + raw GitHub REST API fallback |
-| HTTP Client | httpx (async) |
+| HTTP Client | httpx (async, backend), fetch (frontend) |
