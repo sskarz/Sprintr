@@ -43,7 +43,7 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
       {/* Toggle button */}
       <button
         onClick={onToggle}
-        className="absolute -right-3 top-7 w-6 h-6 bg-card border border-border rounded-full flex items-center justify-center cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-200 z-50"
+        className="absolute -right-3 top-7 w-6 h-6 bg-card border border-border rounded-full flex items-center justify-center cursor-pointer shadow-sm hover:shadow-lg hover:border-blue-400 hover:bg-blue-50 transition-all duration-200 z-50"
       >
         {collapsed ? (
           <ChevronRight className="w-3.5 h-3.5 text-text-secondary" />
@@ -54,7 +54,7 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
 
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 pt-6 pb-4">
-        <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
           <CheckCircle2 className="w-5 h-5 text-white" />
         </div>
         <span
@@ -78,12 +78,12 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
             <div
               key={item.key}
               className={[
-                'flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-default transition-colors duration-150',
+                'flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-default transition-all duration-150',
                 isActive
-                  ? 'bg-green-500 text-white'
+                  ? 'bg-blue-600 text-white shadow-sm'
                   : item.disabled
                     ? 'text-text-muted'
-                    : 'text-text-secondary hover:bg-sage-50',
+                    : 'text-text-secondary hover:bg-blue-50 hover:text-blue-700 hover:shadow-sm',
               ].join(' ')}
               title={collapsed ? item.label : undefined}
             >
@@ -99,7 +99,7 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
                 {item.label}
               </span>
               {item.disabled && !collapsed && (
-                <span className="ml-auto text-[10px] bg-sage-100 text-text-muted px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                <span className="ml-auto text-[10px] bg-slate-100 text-text-muted px-1.5 py-0.5 rounded-full whitespace-nowrap">
                   Soon
                 </span>
               )}
@@ -127,10 +127,10 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
                       className={[
                         'w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-200',
                         done
-                          ? 'bg-green-500'
+                          ? 'bg-blue-600'
                           : active
-                            ? 'bg-green-500'
-                            : 'bg-sage-200',
+                            ? 'bg-blue-600'
+                            : 'bg-slate-200',
                       ].join(' ')}
                     >
                       {done ? (
@@ -138,14 +138,14 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
                       ) : active ? (
                         <Circle className="w-2 h-2 text-white fill-white" />
                       ) : (
-                        <Circle className="w-2 h-2 text-sage-400 fill-sage-400" />
+                        <Circle className="w-2 h-2 text-slate-400 fill-slate-400" />
                       )}
                     </div>
                     {idx < steps.length - 1 && (
                       <div
                         className={[
                           'w-0.5 h-5 transition-colors duration-200',
-                          done ? 'bg-green-500' : 'bg-sage-200',
+                          done ? 'bg-blue-600' : 'bg-slate-200',
                         ].join(' ')}
                       />
                     )}
@@ -157,7 +157,7 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
                       active
                         ? 'font-semibold text-text-primary'
                         : done
-                          ? 'text-green-600 font-medium'
+                          ? 'text-blue-600 font-medium'
                           : 'text-text-muted',
                     ].join(' ')}
                     style={{
@@ -178,8 +178,8 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
       {/* User area */}
       <div className="px-4 pb-5 pt-3 border-t border-border">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-sage-200 rounded-full flex items-center justify-center flex-shrink-0">
-            <User className="w-4 h-4 text-sage-500" />
+          <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center flex-shrink-0">
+            <User className="w-4 h-4 text-slate-500" />
           </div>
           <span
             className="text-sm font-medium text-text-primary whitespace-nowrap transition-opacity duration-200"

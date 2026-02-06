@@ -12,7 +12,7 @@ function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: () =>
       aria-checked={checked}
       onClick={onChange}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ${
-        checked ? 'bg-green-500' : 'bg-gray-300'
+        checked ? 'bg-blue-600' : 'bg-gray-300'
       }`}
     >
       <span
@@ -75,7 +75,7 @@ function InlineEditable({
               setEditing(false)
             }
           }}
-          className={`${className} w-full resize-none rounded-lg border border-green-300 bg-white px-2 py-1 outline-none focus:ring-2 focus:ring-green-200`}
+          className={`${className} w-full resize-none rounded-lg border border-blue-300 bg-white px-2 py-1 outline-none focus:ring-2 focus:ring-blue-200`}
           rows={3}
         />
       )
@@ -93,7 +93,7 @@ function InlineEditable({
             setEditing(false)
           }
         }}
-        className={`${className} w-full rounded-lg border border-green-300 bg-white px-2 py-0.5 outline-none focus:ring-2 focus:ring-green-200`}
+        className={`${className} w-full rounded-lg border border-blue-300 bg-white px-2 py-0.5 outline-none focus:ring-2 focus:ring-blue-200`}
       />
     )
   }
@@ -104,7 +104,7 @@ function InlineEditable({
         setDraft(value)
         setEditing(true)
       }}
-      className={`${className} cursor-pointer rounded px-1 -mx-1 hover:bg-sage-100 transition-colors duration-150`}
+      className={`${className} cursor-pointer rounded px-1 -mx-1 hover:bg-blue-100 hover:shadow-sm transition-all duration-150`}
       title="Click to edit"
     >
       {value}
@@ -129,7 +129,7 @@ function SelectDropdown({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none bg-white border border-border rounded-xl pl-3 pr-8 py-2 text-sm text-text-primary cursor-pointer hover:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 transition-colors"
+        className="appearance-none bg-white border border-border rounded-xl pl-3 pr-8 py-2 text-sm text-text-primary cursor-pointer hover:border-blue-400 hover:bg-blue-50 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all"
       >
         <option value="">{placeholder}</option>
         {options.map((opt) => (
@@ -203,7 +203,7 @@ export default function InsightsSection({
       <div className="mb-6">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors mb-4 cursor-pointer bg-transparent border-0 p-0"
+          className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-blue-600 hover:underline transition-all mb-4 cursor-pointer bg-transparent border-0 p-0"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to input
@@ -227,7 +227,7 @@ export default function InsightsSection({
           {themes.map((theme) => (
             <span
               key={theme}
-              className="badge bg-sage-100 text-sage-500 border border-sage-200"
+              className="badge bg-slate-100 text-slate-500 border border-slate-200"
             >
               {theme}
             </span>
@@ -256,7 +256,7 @@ export default function InsightsSection({
             placeholder="Search insights..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-border rounded-xl pl-9 pr-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 transition-colors"
+            className="w-full bg-white border border-border rounded-xl pl-9 pr-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-colors"
           />
         </div>
       </div>
@@ -299,7 +299,7 @@ export default function InsightsSection({
 
                 {/* Evidence Quote */}
                 {item.insight.evidence_quote && (
-                  <blockquote className="border-l-3 border-green-400 bg-sage-50 rounded-r-lg px-3 py-2 m-0">
+                  <blockquote className="border-l-3 border-blue-400 bg-slate-50 rounded-r-lg px-3 py-2 m-0">
                     <p className="text-sm italic text-text-secondary leading-relaxed m-0">
                       "{item.insight.evidence_quote}"
                     </p>
@@ -321,9 +321,9 @@ export default function InsightsSection({
 
                 {/* Suggested Action */}
                 {item.insight.suggested_action && (
-                  <div className="flex items-start gap-2 bg-green-50 rounded-lg px-3 py-2">
-                    <Lightbulb className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
-                    <p className="text-sm text-green-700 m-0 leading-relaxed">
+                  <div className="flex items-start gap-2 bg-blue-50 rounded-lg px-3 py-2">
+                    <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+                    <p className="text-sm text-blue-700 m-0 leading-relaxed">
                       {item.insight.suggested_action}
                     </p>
                   </div>
@@ -335,8 +335,8 @@ export default function InsightsSection({
       ) : (
         /* ── Empty State ────────────────────────────── */
         <div className="card flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-16 h-16 rounded-full bg-sage-100 flex items-center justify-center mb-4">
-            <Search className="w-7 h-7 text-sage-400" />
+          <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+            <Search className="w-7 h-7 text-slate-400" />
           </div>
           <h3 className="text-lg font-semibold text-text-primary mb-1">No insights found</h3>
           <p className="text-sm text-text-secondary max-w-sm">
