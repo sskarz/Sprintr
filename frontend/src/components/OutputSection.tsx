@@ -8,9 +8,12 @@ import {
   RefreshCw,
   Github,
   Hash,
+  Bot,
 } from 'lucide-react'
 import type { CreatedIssue, InsightWithMeta } from '../types'
 import { categoryConfig, severityConfig } from '../utils'
+import { startBuild } from '../api'
+import BuildProgressModal from './BuildProgressModal'
 
 interface OutputSectionProps {
   issues: CreatedIssue[]
@@ -21,6 +24,8 @@ interface OutputSectionProps {
 
 export default function OutputSection({ issues, stats, insights, onNewAnalysis }: OutputSectionProps) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
+  const [buildingIssues, setBuildingIssues] = useState<Set<number>>(new Set())
+  const [activeBuild, setActiveBuild] = useState<{ buildId: string; issueTitle: string } | null>(null)
 
   function toggleExpand(insightId: string) {
     setExpanded((prev) => {
@@ -36,6 +41,31 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
 
   function findInsight(insightId: string) {
     return insights.find((i) => i.insight.id === insightId)
+  }
+
+  async function handleBuildWithAI(issue: CreatedIssue) {
+    if (buildingIssues.has(issue.issue_number)) return
+    const meta = findInsight(issue.insight_id)
+
+    setBuildingIssues((prev) => new Set(prev).add(issue.issue_number))
+
+    try {
+      const result = await startBuild({
+        issue_number: issue.issue_number,
+        issue_title: issue.title,
+        issue_body: meta?.insight.description ?? '',
+        implementation_guide: meta?.implementation_guide ?? '',
+        insight_description: meta?.insight.description ?? '',
+        suggested_action: meta?.insight.suggested_action ?? '',
+      })
+      setActiveBuild({ buildId: result.build_id, issueTitle: issue.title })
+    } catch {
+      setBuildingIssues((prev) => {
+        const next = new Set(prev)
+        next.delete(issue.issue_number)
+        return next
+      })
+    }
   }
 
   return (
@@ -204,6 +234,17 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   )}
+                  {isCreated && (
+                    <button
+                      type="button"
+                      onClick={() => handleBuildWithAI(issue)}
+                      disabled={buildingIssues.has(issue.issue_number)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-purple-600 bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Bot className="w-3.5 h-3.5" />
+                      {buildingIssues.has(issue.issue_number) ? 'Building...' : 'Build with AI'}
+                    </button>
+                  )}
                   {meta && (
                     <button
                       type="button"
@@ -267,6 +308,15 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
           Start New Analysis
         </button>
       </div>
+
+      {/* ── Build Progress Modal ────────────────────── */}
+      {activeBuild && (
+        <BuildProgressModal
+          buildId={activeBuild.buildId}
+          issueTitle={activeBuild.issueTitle}
+          onClose={() => setActiveBuild(null)}
+        />
+      )}
 
       {/* ── Keyframe animation ───────────────────────── */}
       <style>{`
