@@ -3,6 +3,8 @@ import type {
   AnalyzeResponse,
   EnrichResponse,
   CreateIssuesResponse,
+  BuildStartResponse,
+  BuildStatusResponse,
   Insight,
   EnrichedInsight,
 } from './types'
@@ -61,4 +63,24 @@ export async function createIssues(
     implementation_guide: ei.implementation_guide,
   }))
   return post('/create-issues', { issues })
+}
+
+export async function startBuild(params: {
+  issue_number: number
+  issue_title: string
+  issue_body: string
+  implementation_guide?: string
+  insight_description?: string
+  suggested_action?: string
+}): Promise<BuildStartResponse> {
+  return post('/build', params)
+}
+
+export async function getBuildStatus(buildId: string): Promise<BuildStatusResponse> {
+  const res = await fetch(`${BASE}/build/${buildId}/status`)
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(`API error ${res.status}: ${text}`)
+  }
+  return res.json()
 }
