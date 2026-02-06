@@ -53,16 +53,13 @@ export default function Sidebar({ collapsed, onToggle, activeStep }: SidebarProp
       </button>
 
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 pt-6 pb-4">
-        <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
-          <CheckCircle2 className="w-5 h-5 text-white" />
-        </div>
-        <span
-          className="font-semibold text-text-primary text-base whitespace-nowrap transition-opacity duration-200"
-          style={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto', overflow: 'hidden' }}
-        >
-          Sprint Planner
-        </span>
+      <div className="flex items-center gap-2 px-4 pt-6 pb-4">
+        <img
+          src="/sprintr-logo.png"
+          alt="Sprintr"
+          className="h-8 flex-shrink-0 object-contain"
+          style={{ width: collapsed ? 32 : 'auto', maxWidth: collapsed ? 32 : 140 }}
+        />
       </div>
 
       {/* Divider */}
