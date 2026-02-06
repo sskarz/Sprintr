@@ -11,7 +11,7 @@ Rules:
 - Do NOT create insights from the interviewer's leading questions.
 - Assign unique IDs: "insight-001", "insight-002", etc.
 - The doc_search_query must be specific enough to find implementation docs (e.g. "Stripe subscription billing API webhooks" not "payment processing").
-- Extract 3-10 insights depending on conversation richness.
+- Extract 2-4 of the MOST important insights. Focus on the highest-impact issues only — do not create low-severity or redundant insights.
 """
 
 ANALYSIS_SCHEMA = {
