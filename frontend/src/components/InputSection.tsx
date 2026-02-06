@@ -102,13 +102,13 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
           <p className="text-text-secondary text-sm font-medium">{loadingMessage}</p>
           <div className="flex gap-1.5">
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
-                className="w-1.5 h-1.5 rounded-full bg-green-400 animate-bounce"
+                className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce"
                 style={{ animationDelay: `${i * 150}ms` }}
               />
             ))}
@@ -140,8 +140,8 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
             onClick={() => setTab('paste')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer border-0 ${
               tab === 'paste'
-                ? 'bg-green-500 text-white shadow-sm'
-                : 'text-text-secondary hover:text-text-primary'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-text-secondary hover:text-blue-700 hover:bg-blue-50 hover:shadow-sm'
             }`}
           >
             <FileText className="w-4 h-4" />
@@ -152,8 +152,8 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
             onClick={() => setTab('upload')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer border-0 ${
               tab === 'upload'
-                ? 'bg-green-500 text-white shadow-sm'
-                : 'text-text-secondary hover:text-text-primary'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-text-secondary hover:text-blue-700 hover:bg-blue-50 hover:shadow-sm'
             }`}
           >
             <Mic className="w-4 h-4" />
@@ -168,7 +168,7 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder={PLACEHOLDER}
-              className="w-full min-h-[300px] bg-white border border-border rounded-xl p-4 text-sm text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all duration-200 font-sans leading-relaxed"
+              className="w-full min-h-[300px] bg-white border border-border rounded-xl p-4 text-sm text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 transition-all duration-200 font-sans leading-relaxed"
             />
             <div className="text-right">
               <span className="text-xs text-text-muted">
@@ -182,9 +182,9 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
         {tab === 'upload' && (
           <div>
             {file ? (
-              <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl p-4">
+              <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-xl p-4">
                 <div className="flex items-center gap-3">
-                  <FileAudio className="w-5 h-5 text-green-600" />
+                  <FileAudio className="w-5 h-5 text-blue-600" />
                   <div>
                     <p className="text-sm font-medium text-text-primary">{file.name}</p>
                     <p className="text-xs text-text-muted">{formatBytes(file.size)}</p>
@@ -196,9 +196,9 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
                     setFile(null)
                     if (fileInputRef.current) fileInputRef.current.value = ''
                   }}
-                  className="p-1.5 rounded-lg hover:bg-green-100 transition-colors cursor-pointer border-0 bg-transparent"
+                  className="p-1.5 rounded-lg hover:bg-red-100 hover:text-red-600 hover:shadow-sm transition-all cursor-pointer border-0 bg-transparent"
                 >
-                  <X className="w-4 h-4 text-text-secondary" />
+                  <X className="w-4 h-4 text-text-secondary hover:text-red-600" />
                 </button>
               </div>
             ) : (
@@ -209,8 +209,8 @@ export default function InputSection({ loading, loadingMessage, onAnalyze }: Inp
                 onClick={() => fileInputRef.current?.click()}
                 className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl p-12 cursor-pointer transition-all duration-200 ${
                   dragOver
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-border hover:border-green-400 hover:bg-green-50/50'
+                    ? 'border-blue-600 bg-blue-100 shadow-md'
+                    : 'border-border hover:border-blue-500 hover:bg-blue-100 hover:shadow-md'
                 }`}
               >
                 <Upload className="w-8 h-8 text-text-muted" />

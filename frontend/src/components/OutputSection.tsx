@@ -42,8 +42,8 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
     <div className="flex flex-col gap-8">
       {/* ── Page Header ──────────────────────────────── */}
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center">
-          <CheckCircle2 className="w-7 h-7 text-green-600" />
+        <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center">
+          <CheckCircle2 className="w-7 h-7 text-blue-600" />
         </div>
         <div>
           <h1 className="text-3xl font-bold text-text-primary tracking-tight">
@@ -62,7 +62,7 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
           <div className="card relative overflow-hidden">
             <div className="absolute top-3 right-3 flex gap-1 opacity-20">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <div key={i} className="w-1.5 h-1.5 rounded-full bg-blue-600" />
               ))}
             </div>
             <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">
@@ -71,23 +71,23 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
             <p className="text-4xl font-bold text-text-primary">
               {stats.total}
             </p>
-            <div className="mt-3 h-1 w-16 rounded-full bg-green-200" />
+            <div className="mt-3 h-1 w-16 rounded-full bg-blue-200" />
           </div>
 
           {/* Successful */}
           <div className="card relative overflow-hidden">
             <div className="absolute top-3 right-3 opacity-20">
-              <CheckCircle2 className="w-8 h-8 text-green-500" />
+              <CheckCircle2 className="w-8 h-8 text-blue-600" />
             </div>
             <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">
               Successful
             </p>
-            <p className="text-4xl font-bold text-green-600">
+            <p className="text-4xl font-bold text-blue-600">
               {stats.successful}
             </p>
             <div className="mt-3 flex gap-1">
               {[...Array(Math.min(stats.successful, 12))].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-green-400" />
+                <div key={i} className="w-2 h-2 rounded-full bg-blue-500" />
               ))}
             </div>
           </div>
@@ -114,14 +114,14 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
 
           {/* Placeholder when no failures — keep grid alignment */}
           {stats.failed === 0 && (
-            <div className="card relative overflow-hidden bg-green-50/50 border-green-200">
-              <p className="text-xs font-semibold uppercase tracking-wider text-green-600 mb-2">
+            <div className="card relative overflow-hidden bg-blue-50/50 border-blue-200">
+              <p className="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-2">
                 All Clear
               </p>
-              <p className="text-4xl font-bold text-green-600">
+              <p className="text-4xl font-bold text-blue-600">
                 0
               </p>
-              <p className="text-xs text-green-500 mt-2">No failures</p>
+              <p className="text-xs text-blue-500 mt-2">No failures</p>
             </div>
           )}
         </div>
@@ -150,8 +150,8 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
                 {/* Status icon */}
                 <div className="flex-shrink-0">
                   {isCreated ? (
-                    <div className="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center">
-                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center">
+                      <CheckCircle2 className="w-5 h-5 text-blue-600" />
                     </div>
                   ) : (
                     <div className="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center">
@@ -197,7 +197,7 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
                       href={issue.github_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-green-600 hover:text-green-700 transition-colors duration-150"
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors duration-150"
                     >
                       <Github className="w-3.5 h-3.5" />
                       View on GitHub
@@ -208,12 +208,12 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
                     <button
                       type="button"
                       onClick={() => toggleExpand(issue.insight_id)}
-                      className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-150 cursor-pointer border-0 bg-transparent"
+                      className="p-2 rounded-lg hover:bg-blue-100 hover:shadow-sm transition-all duration-150 cursor-pointer border-0 bg-transparent"
                     >
                       {isExpanded ? (
-                        <ChevronUp className="w-4 h-4 text-text-secondary" />
+                        <ChevronUp className="w-4 h-4 text-text-secondary hover:text-blue-600" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-text-secondary" />
+                        <ChevronDown className="w-4 h-4 text-text-secondary hover:text-blue-600" />
                       )}
                     </button>
                   )}
@@ -236,7 +236,7 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
                       <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-1">
                         Evidence Quote
                       </p>
-                      <blockquote className="text-sm text-text-secondary italic border-l-2 border-green-300 pl-3 leading-relaxed">
+                      <blockquote className="text-sm text-text-secondary italic border-l-2 border-blue-300 pl-3 leading-relaxed">
                         "{meta.insight.evidence_quote}"
                       </blockquote>
                     </div>
@@ -261,7 +261,7 @@ export default function OutputSection({ issues, stats, insights, onNewAnalysis }
         <button
           type="button"
           onClick={onNewAnalysis}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-green-600 border-2 border-green-500 bg-white hover:bg-green-50 transition-all duration-200 cursor-pointer"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-blue-600 border-2 border-blue-600 bg-white hover:bg-blue-600 hover:text-white hover:shadow-lg transition-all duration-200 cursor-pointer"
         >
           <RefreshCw className="w-4 h-4" />
           Start New Analysis
