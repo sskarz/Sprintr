@@ -1,25 +1,29 @@
-Interviewer: Thanks for joining today. Can you walk me through how you typically use the dashboard?
+Interviewer: Thanks for taking the time to chat with us today. Let's start with your general impression of the website's look and feel.
 
-User: Sure. So every morning I log in and the first thing I do is check the analytics page. But honestly, it takes forever to load. Like, sometimes I'm waiting 15 to 20 seconds just staring at a spinner. It's really frustrating when I'm trying to get a quick overview before my standup.
+User: Honestly, the first thing that hits me every time I open the site is all the green. Everything is green — the buttons, the navigation bar, the links, the icons. It feels like I'm looking at a spreadsheet from the '90s. It's really off-putting.
 
-Interviewer: That sounds painful. Is there anything else about the analytics page that bothers you?
+Interviewer: Interesting. Can you tell me more about what specifically bothers you about the green?
 
-User: Yeah, actually. The filters are super confusing. I can never figure out how to filter by date range and team at the same time. I end up just exporting the raw data to Excel and doing it there, which defeats the whole purpose of having a dashboard.
+User: It just doesn't feel professional. I work in finance, and every other tool I use — Slack, Bloomberg, our internal dashboards — they all use blues and grays. When I pull up your site in a meeting to show something to a client, the bright green buttons make it look like a toy. I've actually had a colleague ask me if it was a beta or something. It's embarrassing.
 
-Interviewer: Got it. What about the project management features? How do those work for you?
+Interviewer: That's really helpful context. Are there specific UI elements where the green is most problematic?
 
-User: The Kanban board is actually pretty good. I like the drag and drop. But one thing that drives me crazy is there's no way to set recurring tasks. Every Monday I have to manually create the same five tasks for our weekly process. I've been asking for this feature for months.
+User: The primary action buttons are the worst offender. The big green "Submit" and "Confirm" buttons clash with everything else on the screen. And the navigation bar being that same green is just overwhelming. I'd expect something like a calm blue or a navy for the nav bar. Blue conveys trust and professionalism — green just screams "go" like a traffic light.
 
-Interviewer: That's a great point. Are there any other features you wish existed?
+Interviewer: Got it. What about the hover states and active indicators?
 
-User: I'd love some kind of notification system. Right now, if someone assigns me a task or leaves a comment, I have no idea unless I manually go check. I've missed important updates because of that. Even just email notifications would be a huge improvement.
+User: Those are actually even worse. When I hover over a menu item, it goes from green to an even brighter green. There's zero contrast. Half the time I can't even tell what I'm hovering over. If those were blue — like a nice hover-to-darker-blue transition — it would be so much more readable. I've actually misclicked on things because I couldn't tell which element was active.
 
-Interviewer: How about the search functionality?
+Interviewer: Has this affected your workflow at all?
 
-User: Oh, don't even get me started. The search is basically broken. If I search for a project by name, half the time it doesn't show up. I think it only does exact matches or something. Last week I searched for "Q1 Marketing" and got zero results, but the project was right there named "Q1 Marketing Campaign 2025." It's like it can't handle partial matches at all.
+User: Definitely. I avoid using the site when I'm screen-sharing because of how it looks. I also find myself squinting at the sidebar because the green active-state indicator blends in with the green background of the menu. If the active tab were highlighted in blue against a neutral background, I could scan the navigation way faster. Right now I waste time just figuring out which section I'm in.
 
-Interviewer: That's definitely something we need to fix. Anything else you'd like to share?
+Interviewer: Are there any parts of the current design that you do like?
 
-User: One more thing — the mobile experience is terrible. I sometimes need to check things on my phone during meetings, and the whole layout is broken on mobile. Buttons overlap, text gets cut off, and I can't even scroll on some pages. It feels like mobile was never tested.
+User: The layout itself is fine. The spacing, the typography, the card-based design — all good. It's literally just the color scheme that ruins it. If you swapped all the greens for blues and kept everything else the same, it would be a completely different experience. I'd actually feel good showing it to people.
 
-Interviewer: Really appreciate the candid feedback. This is incredibly helpful for our team.
+Interviewer: Any other thoughts on the visual design?
+
+User: One more thing — the success and error states are confusing because everything is already green. When I submit a form and get a green success banner, it doesn't stand out at all because the whole page is green. I almost missed a confirmation once because the success message blended right into the header. If the base UI were blue, then green for success and red for error would actually work and be immediately noticeable.
+
+Interviewer: That's a great point about the feedback states. Really appreciate the detailed feedback — this is exactly what we needed to hear.

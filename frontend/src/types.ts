@@ -75,6 +75,31 @@ export interface CreateIssuesResponse {
   failed: number
 }
 
+// ── Build with AI ─────────────────────────────
+export interface BuildLogEntry {
+  timestamp: string
+  type: 'status' | 'agent_text' | 'tool_use' | 'error' | 'result' | 'done'
+  message?: string
+  status?: string
+  pr_url?: string | null
+  error?: string | null
+}
+
+export interface BuildStartResponse {
+  build_id: string
+  status: string
+}
+
+export interface BuildStatusResponse {
+  build_id: string
+  issue_number: number
+  status: 'queued' | 'cloning' | 'running' | 'completed' | 'failed'
+  pr_url: string | null
+  error: string | null
+  logs: BuildLogEntry[]
+  created_at: string
+}
+
 // ── App state ──────────────────────────────────────
 export interface InsightWithMeta extends EnrichedInsight {
   included: boolean
