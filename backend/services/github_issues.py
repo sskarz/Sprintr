@@ -16,8 +16,8 @@ if USE_COMPOSIO:
 
 async def _create_via_composio(title: str, body: str, labels: list[str]) -> dict:
     result = composio_client.tools.execute(
-        action="GITHUB_CREATE_AN_ISSUE",
-        params={
+        slug="GITHUB_CREATE_AN_ISSUE",
+        arguments={
             "owner": GITHUB_OWNER,
             "repo": GITHUB_REPO,
             "title": title,
@@ -25,6 +25,7 @@ async def _create_via_composio(title: str, body: str, labels: list[str]) -> dict
             "labels": labels,
         },
         user_id="default",
+        dangerously_skip_version_check=True,
     )
     # Composio wraps response — try common paths for the data
     data = result.get("data", result)

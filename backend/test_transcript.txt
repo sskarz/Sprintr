@@ -1,0 +1,25 @@
+Interviewer: Thanks for joining today. Can you walk me through how you typically use the dashboard?
+
+User: Sure. So every morning I log in and the first thing I do is check the analytics page. But honestly, it takes forever to load. Like, sometimes I'm waiting 15 to 20 seconds just staring at a spinner. It's really frustrating when I'm trying to get a quick overview before my standup.
+
+Interviewer: That sounds painful. Is there anything else about the analytics page that bothers you?
+
+User: Yeah, actually. The filters are super confusing. I can never figure out how to filter by date range and team at the same time. I end up just exporting the raw data to Excel and doing it there, which defeats the whole purpose of having a dashboard.
+
+Interviewer: Got it. What about the project management features? How do those work for you?
+
+User: The Kanban board is actually pretty good. I like the drag and drop. But one thing that drives me crazy is there's no way to set recurring tasks. Every Monday I have to manually create the same five tasks for our weekly process. I've been asking for this feature for months.
+
+Interviewer: That's a great point. Are there any other features you wish existed?
+
+User: I'd love some kind of notification system. Right now, if someone assigns me a task or leaves a comment, I have no idea unless I manually go check. I've missed important updates because of that. Even just email notifications would be a huge improvement.
+
+Interviewer: How about the search functionality?
+
+User: Oh, don't even get me started. The search is basically broken. If I search for a project by name, half the time it doesn't show up. I think it only does exact matches or something. Last week I searched for "Q1 Marketing" and got zero results, but the project was right there named "Q1 Marketing Campaign 2025." It's like it can't handle partial matches at all.
+
+Interviewer: That's definitely something we need to fix. Anything else you'd like to share?
+
+User: One more thing — the mobile experience is terrible. I sometimes need to check things on my phone during meetings, and the whole layout is broken on mobile. Buttons overlap, text gets cut off, and I can't even scroll on some pages. It feels like mobile was never tested.
+
+Interviewer: Really appreciate the candid feedback. This is incredibly helpful for our team.
