@@ -171,6 +171,8 @@ export default function InsightsSection({
   const [categoryFilter, setCategoryFilter] = useState('')
   const [severityFilter, setSeverityFilter] = useState('')
   const [search, setSearch] = useState('')
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [draft, setDraft] = useState<Partial<Insight>>({})
 
   const includedCount = insights.filter((i) => i.included).length
 
@@ -265,6 +267,7 @@ export default function InsightsSection({
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {filtered.map((item) => {
+            const isEditing = editingId === item.insight.id
             const cat = categoryConfig[item.insight.category]
             const sev = severityConfig[item.insight.severity]
 
@@ -277,11 +280,19 @@ export default function InsightsSection({
               >
                 {/* Card Header */}
                 <div className="flex items-start justify-between gap-3">
-                  <InlineEditable
-                    value={item.insight.title}
-                    onSave={(val) => onUpdateInsight(item.insight.id, { title: val })}
-                    className="text-base font-semibold text-text-primary leading-snug"
-                  />
+                  {isEditing ? (
+                    <input
+                      value={draft.title ?? item.insight.title}
+                      onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
+                      className="text-base font-semibold text-text-primary leading-snug w-full rounded-md border border-border px-2 py-1"
+                    />
+                  ) : (
+                    <InlineEditable
+                      value={item.insight.title}
+                      onSave={(val) => onUpdateInsight(item.insight.id, { title: val })}
+                      className="text-base font-semibold text-text-primary leading-snug"
+                    />
+                  )}
                   <ToggleSwitch
                     checked={item.included}
                     onChange={() => onToggleInclude(item.insight.id)}
@@ -300,9 +311,18 @@ export default function InsightsSection({
                 {/* Evidence Quote */}
                 {item.insight.evidence_quote && (
                   <blockquote className="border-l-3 border-green-400 bg-sage-50 rounded-r-lg px-3 py-2 m-0">
-                    <p className="text-sm italic text-text-secondary leading-relaxed m-0">
-                      "{item.insight.evidence_quote}"
-                    </p>
+                    {isEditing ? (
+                      <textarea
+                        value={draft.evidence_quote ?? item.insight.evidence_quote}
+                        onChange={(e) => setDraft((d) => ({ ...d, evidence_quote: e.target.value }))}
+                        className="w-full resize-none rounded-lg border border-green-300 bg-white px-2 py-1 outline-none focus:ring-2 focus:ring-green-200"
+                        rows={3}
+                      />
+                    ) : (
+                      <p className="text-sm italic text-text-secondary leading-relaxed m-0">
+                        "{item.insight.evidence_quote}"
+                      </p>
+                    )}
                     {item.insight.speaker && (
                       <p className="text-xs text-text-muted mt-1 mb-0">
                         -- {item.insight.speaker}
@@ -312,22 +332,105 @@ export default function InsightsSection({
                 )}
 
                 {/* Description */}
-                <InlineEditable
-                  value={item.insight.description}
-                  onSave={(val) => onUpdateInsight(item.insight.id, { description: val })}
-                  className="text-sm text-text-secondary leading-relaxed"
-                  as="p"
-                />
+                {isEditing ? (
+                  <textarea
+                    value={draft.description ?? item.insight.description}
+                    onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
+                    className="w-full resize-none rounded-lg border border-border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-green-200"
+                    rows={4}
+                  />
+                ) : (
+                  <InlineEditable
+                    value={item.insight.description}
+                    onSave={(val) => onUpdateInsight(item.insight.id, { description: val })}
+                    className="text-sm text-text-secondary leading-relaxed"
+                    as="p"
+                  />
+                )}
 
                 {/* Suggested Action */}
-                {item.insight.suggested_action && (
-                  <div className="flex items-start gap-2 bg-green-50 rounded-lg px-3 py-2">
-                    <Lightbulb className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
-                    <p className="text-sm text-green-700 m-0 leading-relaxed">
-                      {item.insight.suggested_action}
-                    </p>
+                {isEditing ? (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs text-text-muted">Suggested action</label>
+                    <textarea
+                      value={draft.suggested_action ?? item.insight.suggested_action}
+                      onChange={(e) => setDraft((d) => ({ ...d, suggested_action: e.target.value }))}
+                      className="w-full resize-none rounded-lg border border-border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-green-200"
+                      rows={3}
+                    />
+                    <div className="flex items-center gap-2">
+                      <SelectDropdown
+                        value={draft.category ?? item.insight.category}
+                        onChange={(v) => setDraft((d) => ({ ...d, category: v as InsightCategory }))}
+                        options={categoryOptions}
+                        placeholder="Category"
+                      />
+                      <SelectDropdown
+                        value={draft.severity ?? item.insight.severity}
+                        onChange={(v) => setDraft((d) => ({ ...d, severity: v as InsightSeverity }))}
+                        options={severityOptions}
+                        placeholder="Severity"
+                      />
+                    </div>
                   </div>
+                ) : (
+                  item.insight.suggested_action && (
+                    <div className="flex items-start gap-2 bg-green-50 rounded-lg px-3 py-2">
+                      <Lightbulb className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                      <p className="text-sm text-green-700 m-0 leading-relaxed">
+                        {item.insight.suggested_action}
+                      </p>
+                    </div>
+                  )
                 )}
+
+                {/* Edit / Save / Cancel controls */}
+                <div className="flex items-center justify-end gap-2">
+                  {isEditing ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Save draft
+                          const updates: Partial<Insight> = {}
+                          if (draft.title !== undefined) updates.title = draft.title
+                          if (draft.description !== undefined) updates.description = draft.description
+                          if (draft.evidence_quote !== undefined) updates.evidence_quote = draft.evidence_quote
+                          if (draft.suggested_action !== undefined) updates.suggested_action = draft.suggested_action
+                          if (draft.category !== undefined) updates.category = draft.category as InsightCategory
+                          if (draft.severity !== undefined) updates.severity = draft.severity as InsightSeverity
+                          onUpdateInsight(item.insight.id, updates)
+                          setEditingId(null)
+                          setDraft({})
+                        }}
+                        className="btn-primary px-3 py-1 text-sm"
+                      >
+                        Save
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingId(null)
+                          setDraft({})
+                        }}
+                        className="px-3 py-1 text-sm border rounded-md bg-white"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingId(item.insight.id)
+                        setDraft({ ...item.insight })
+                      }}
+                      className="px-3 py-1 text-sm border rounded-md bg-white"
+                    >
+                      Edit
+                    </button>
+                  )}
+                </div>
               </div>
             )
           })}
