@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="frontend/public/sprintr-logo.png" alt="Sprintr Logo" width="120" />
+  <img src="frontend/public/sprintr-logo.png" alt="Sprintr" width="280" />
 </p>
-
-<h1 align="center">Sprintr</h1>
 
 <p align="center">
   <strong>Turn user interviews into sprint-ready GitHub issues in minutes, not days.</strong>
@@ -13,7 +11,7 @@
 </p>
 
 <p align="center">
-  Built at the <a href="#">Continual Learning Hackathon 2026</a>
+  <a href="https://youtu.be/4jvxkSsN8Zs?si=5jpKAeiVnMeofOyT">Watch the demo</a> · Built at the Continual Learning Hackathon 2026
 </p>
 
 ---
